@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Kirby WebRTC Player</title>
+    <style>
+        body { margin: 0; background: linear-gradient(45deg, #ff9a9e, #fecfef); font-family: "Comic Sans MS", cursive; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .player-container { border: 6px solid pink; border-radius: 20px; padding: 20px; background: rgba(255,255,255,0.9); box-shadow: 0 0 30px rgba(255,182,193,0.5); text-align: center; }
+        video { width: 640px; height: 360px; border-radius: 12px; background: black; }
+        h1 { color: #ff66b2; text-shadow: 2px 2px #fff; margin-bottom: 10px; position: absolute; top: 20px; width: 100%; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>🎀 Kirby WebRTC Player 🎀</h1>
+    <div class="player-container">
+        <video id="player" autoplay playsinline controls muted></video>
+    </div>
+
+    <script src="webrtc.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const app = urlParams.get('app') || 'live';
+        const stream = urlParams.get('stream') || 'mystream';
+        
+        // FEM SERVIR EL PORT 1985 (HTTP) perquè el 8443 no respon
+        // I l'endpoint correcte de l'API de SRS:
+	const srsApiUrl = "https://practicadamaididi.ddns.net/rtc/v1/play/";
+
+        console.log("Iniciant Kirby Player per a:", app, stream);
+
+        // IMPORTANT: Passar app i stream a la funció
+        SrsRtcPlayer.play(srsApiUrl, document.getElementById('player'), app, stream);
+    </script>
+</body>
+</html>
