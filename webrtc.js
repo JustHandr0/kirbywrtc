@@ -1,6 +1,5 @@
 var SrsRtcPlayer = {
     play: async function(apiUrl, videoElement, app, stream) {
-        console.log("🚀 Connectant a l'API:", apiUrl);
         const pc = new RTCPeerConnection(null);
         pc.addTransceiver("audio", { direction: "recvonly" });
         pc.addTransceiver("video", { direction: "recvonly" });
