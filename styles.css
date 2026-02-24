@@ -1,0 +1,279 @@
+:root {
+    --bg-dark: #0e0e10;
+    --bg-light: #18181b;
+    --accent: #9147ff;
+    --text-main: #efeff1;
+    --text-muted: #adadb8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* NAVBAR */
+
+.navbar {
+    height: 60px;
+    background: var(--bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #303032;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.search-bar input {
+    background: #464649;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    color: white;
+    width: 300px;
+}
+
+.btn-login,
+.btn-follow {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-follow {
+    background: #9147ff;
+}
+
+/* LAYOUT */
+
+.main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 200px;
+    background: var(--bg-light);
+    padding: 15px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar h3 {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.channel-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.channel-item:hover {
+    background: #26262c;
+}
+
+.avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.info span {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.info p {
+    font-size: 0.7rem;
+    margin: 0;
+    color: #eb0400;
+}
+
+/* VIDEO */
+
+.content-area {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.video-wrapper {
+    position: relative;
+    background: black;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.live-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #eb0400;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.viewer-count {
+    color: #eb0400;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+/* STREAM INFO */
+
+.stream-info {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.streamer-details {
+    display: flex;
+    gap: 15px;
+}
+
+.streamer-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+}
+
+.stream-meta {
+    color: var(--text-muted);
+}
+
+/* CHAT */
+
+.chat-sidebar {
+    width: 340px;
+    background: var(--bg-light);
+    border-left: 1px solid #303032;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #303032;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.chat-user {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.chat-user.system {
+    color: var(--text-muted);
+}
+
+.chat-user.you {
+    color: #00ff7f;
+}
+
+.chat-input {
+    padding: 15px;
+    border-top: 1px solid #303032;
+}
+
+.chat-input input {
+    width: 100%;
+    background: #2f2f35;
+    border: 2px solid transparent;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+}
+
+.chat-input input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+/* LIVE BADGE DINÀMIC */
+
+.live-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #eb0400;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    gap: 6px;
+}
+
+.live-badge::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+.live-badge.live {
+    display: flex;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 1; }
+}
