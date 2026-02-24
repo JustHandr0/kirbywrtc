@@ -2,35 +2,193 @@
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
-    <title>Kirby WebRTC Player</title>
-    <style>
-        body { margin: 0; background: linear-gradient(45deg, #ff9a9e, #fecfef); font-family: "Comic Sans MS", cursive; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .player-container { border: 6px solid pink; border-radius: 20px; padding: 20px; background: rgba(255,255,255,0.9); box-shadow: 0 0 30px rgba(255,182,193,0.5); text-align: center; }
-        video { width: 640px; height: 360px; border-radius: 12px; background: black; }
-        h1 { color: #ff66b2; text-shadow: 2px 2px #fff; margin-bottom: 10px; position: absolute; top: 20px; width: 100%; text-align: center; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamPro | Live</title>
+
+    <!-- CSS extern -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>🎀 Kirby WebRTC Player 🎀</h1>
-    <div class="player-container">
-        <video id="player" autoplay playsinline controls muted></video>
+
+    <nav class="navbar">
+        <div class="logo">STREAM<span>PRO</span></div>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar directes o categories...">
+        </div>
+        <div class="user-actions">
+            <button class="btn-login">Inicia sessió</button>
+        </div>
+    </nav>
+
+    <main class="main-layout">
+        <aside class="sidebar">
+            <h3>Canals seguits</h3>
+         <div class="channel-item">
+    <img class="avatar" src="https://preview.redd.it/new-copy-ability-drip-v0-f5viutmhh9qb1.jpg?width=640&crop=smart&auto=webp&s=155176213cb1e9a95d10b16cf1bcc8b058d3c10a" alt="Kirby_Fan">
+    <div class="info"><span>Kirby_Fan</span><p>🔴 1.2k</p></div>
     </div>
 
-    <script src="webrtc.js"></script>
+    <div class="channel-item">
+    <img class="avatar" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh7HT_p5c4A8nKqqwxmWBN1qbK7XfBFfhb4A&s" alt="TechGuru">
+    <div class="info"><span>TechGuru</span><p>Offline</p></div>
+    </div>
 
+            <hr class="divider">
+            <h3>Explorar</h3>
+            <div class="channel-item"><span>🎮 Gaming</span></div>
+            <div class="channel-item"><span>🎵 Música</span></div>
+        </aside>
+
+        <section class="content-area">
+            <div class="video-wrapper">
+                <video id="player" autoplay playsinline controls muted></video>
+                <div class="live-badge" id="liveBadge">EN DIRECTE</div>
+            </div>
+            
+            <div class="stream-info">
+                <div class="streamer-details">
+                    <img src="https://preview.redd.it/new-copy-ability-drip-v0-f5viutmhh9qb1.jpg?width=640&crop=smart&auto=webp&s=155176213cb1e9a95d10b16cf1bcc8b058d3c10a" alt="Avatar" class="streamer-avatar">
+                    <div class="stream-text">
+                        <h2 id="display-stream-name">Hola?</h2>
+                        <p class="stream-meta">Categoria: <strong>Informatica i Comunicacions</strong></p>
+                        <p class="viewer-count">● 1.254 espectadors</p>
+                    </div>
+                </div>
+                <button class="btn-follow">Seguir</button>
+            </div>
+        </section>
+
+        <aside class="chat-sidebar">
+            <div class="chat-header">XAT DEL DIRECTE</div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message">
+                    <span class="chat-user system">Sistema:</span> Benvinguts al xat!
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="Envia un missatge..." id="userInput">
+            </div>
+        </aside>
+    </main>
+
+    <script src="webrtc.js"></script>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const app = urlParams.get('app') || 'live';
         const stream = urlParams.get('stream') || 'mystream';
-        
-        // FEM SERVIR EL PORT 1985 (HTTP) perquè el 8443 no respon
-        // I l'endpoint correcte de l'API de SRS:
-	const srsApiUrl = "https://practicadamaididi.ddns.net/rtc/v1/play/";
+        const srsApiUrl = "https://practicadamaididi.ddns.net/rtc/v1/play/";
 
-        console.log("Iniciant Kirby Player per a:", app, stream);
+        document.getElementById('display-stream-name').textContent = `Directe: ${stream}`;
 
-        // IMPORTANT: Passar app i stream a la funció
-        SrsRtcPlayer.play(srsApiUrl, document.getElementById('player'), app, stream);
+        if (typeof SrsRtcPlayer !== 'undefined') {
+            SrsRtcPlayer.play(srsApiUrl, document.getElementById('player'), app, stream);
+        }
+         const video = document.getElementById("player");
+    const liveBadge = document.getElementById("liveBadge");
+
+            // Quan el vídeo rep dades reals
+            video.addEventListener("playing", () => {
+            liveBadge.classList.add("live");
+});
+
+            // Si el stream es para
+        video.addEventListener("pause", () => {
+        liveBadge.classList.remove("live");
+});
+
+        video.addEventListener("ended", () => {
+        liveBadge.classList.remove("live");
+});
+
+        const messages = [
+           { user: "Mario", text: "Això ha estat espectacular." },
+{ user: "Link", text: "Sembla una dungeon complicada." },
+{ user: "Zelda", text: "Molt bona estratègia ara mateix." },
+{ user: "Kirby", text: "Aquest moviment ha estat top." },
+{ user: "Luigi", text: "Gairebé cau." },
+{ user: "Peach", text: "M’encanta aquest directe." },
+{ user: "Samus", text: "Reflexos perfectes." },
+{ user: "Kratos", text: "Això ha estat brutal." },
+{ user: "LaraCroft", text: "Gran jugada." },
+{ user: "Sonic", text: "Ha anat molt ràpid." },
+{ user: "Shadow", text: "Molt net i professional." },
+{ user: "MasterChief", text: "Objectiu completat." },
+{ user: "Geralt", text: "Bona decisió." },
+{ user: "Ciri", text: "Això ha estat èpic." },
+{ user: "Ezio", text: "Aquest boss ja és història." },
+{ user: "Altair", text: "Moviment precís." },
+{ user: "NathanDrake", text: "Sembla una escena de pel·lícula." },
+{ user: "Crash", text: "No m’ho esperava." },
+{ user: "Spyro", text: "Molt intens." },
+{ user: "Cloud", text: "Limit activat." },
+{ user: "Sephiroth", text: "Interessant moviment." },
+{ user: "Tifa", text: "Molt bona execució." },
+{ user: "Ryu", text: "Gran combinació." },
+{ user: "ChunLi", text: "Quina velocitat." },
+{ user: "SubZero", text: "Fredament calculat." },
+{ user: "Scorpion", text: "Això ha estat contundent." },
+{ user: "Steve", text: "Això amb més recursos seria millor." },
+{ user: "Alex", text: "Gran construcció de jugada." },
+{ user: "ArthurMorgan", text: "Així és com es fa." },
+{ user: "JohnMarston", text: "Molt net." },
+{ user: "Ellie", text: "Moment molt tens." },
+{ user: "Joel", text: "Ben jugat." },
+{ user: "Aloy", text: "Bona tàctica contra aquest enemic." },
+{ user: "Krystal", text: "Molt precís." },
+{ user: "FoxMcCloud", text: "Això ha estat arriscat." },
+{ user: "Pikachu", text: "Gran atac." },
+{ user: "Ash", text: "Això és entrenament del bo." },
+{ user: "LeonKennedy", text: "Situació controlada." },
+{ user: "ClaireRedfield", text: "Bona supervivència." },
+{ user: "DoomSlayer", text: "Sense pietat." },
+{ user: "MarcusFenix", text: "Impacte directe." },
+{ user: "PrincessZelda", text: "Perfecte timing." },
+{ user: "Bowser", text: "Gairebé." },
+{ user: "Ganondorf", text: "Això encara no ha acabat." },
+{ user: "Yoshi", text: "Molt bon moviment." },
+{ user: "DonkeyKong", text: "Això ha estat potent." },
+{ user: "MegaMan", text: "Nova habilitat desbloquejada." },
+{ user: "PacMan", text: "Això ha estat ràpid." },
+{ user: "Sans", text: "Interessant." },
+{ user: "FreddyFazbear", text: "Millor vigilar." }
+        ];
+
+        const chatContainer = document.getElementById("chatMessages");
+
+        function addMessage() {
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add("chat-message");
+            messageDiv.innerHTML = `<span class="chat-user">${msg.user}:</span> ${msg.text}`;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            if (chatContainer.children.length > 50) {
+                chatContainer.removeChild(chatContainer.firstChild);
+            }
+        }
+
+        function scheduleNextMessage() {
+            const randomTime = Math.random() * (7000 - 3000) + 3000;
+            setTimeout(() => {
+                addMessage();
+                scheduleNextMessage();
+            }, randomTime);
+        }
+
+        scheduleNextMessage();
+
+        document.getElementById('userInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && this.value.trim() !== "") {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("chat-message");
+                messageDiv.innerHTML = `<span class="chat-user you">Tu:</span> ${this.value}`;
+                chatContainer.appendChild(messageDiv);
+                this.value = "";
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        });
     </script>
+
 </body>
 </html>
